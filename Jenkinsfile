@@ -42,14 +42,15 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                sh """
-                    kubectl set image deployment/mywebsite-deployment \
-                    mywebsite=${mywebsite}:${v2} \
-                    -n ${KUBE_NAMESPACE}
-                """
-            }
-        }
+    steps {
+        sh '''
+        kubectl set image deployment/mywebsite-deployment \
+        mywebsite=${DOCKER_IMAGE}:${IMAGE_TAG} \
+        -n ${KUBE_NAMESPACE}
+        '''
+    }
+}
+
 
         stage('Verify Rollout') {
             steps {
